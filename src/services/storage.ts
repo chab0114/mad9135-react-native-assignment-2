@@ -14,12 +14,23 @@ export const saveUsers = async (users: User[]): Promise<void> => {
   }
 };
 
-export const getUsersFromStorage = async (): Promise<User[]> => {
+// Load users from AsyncStorage
+export const loadUsers = async (): Promise<User[]> => {
   try {
     const jsonValue = await AsyncStorage.getItem(USERS_STORAGE_KEY);
-    return jsonValue != null ? JSON.parse(jsonValue) : [];
+    return jsonValue ? JSON.parse(jsonValue) : [];
   } catch (error) {
-    console.error("Error getting users from storage:", error);
-    return [];
+    console.error('Error loading users:', error);
+    return []; // Return empty array on error
+  }
+};
+
+// Clear all saved users (for testing/reset)
+export const clearUsers = async (): Promise<void> => {
+  try {
+    await AsyncStorage.removeItem(USERS_STORAGE_KEY);
+  } catch (error) {
+    console.error('Error clearing users:', error);
+    throw error;
   }
 };
