@@ -1,31 +1,51 @@
 // src/screens/HomeScreen.tsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Avatar } from '@rneui/themed';
 import { colors } from '../styles/globalStyles';
+import { fetchUsers } from '../services/userApi';
+import { User } from '../types/User';
 
 export default function HomeScreen() {
-  const testUser = {
-    uuid: 'test-123',
-    name: { first: 'Axe', last: 'Mogul Khan' },
-    picture: { thumbnail: 'https://randomuser.me/api/portraits/thumb/men/1.jpg' }
+  const [users, setUsers] = useState<User[]>([]);
+
+  // Fetch users when component loads
+  useEffect(() => {
+    loadUsers();
+  }, []);
+
+  const loadUsers = async () => {
+    try {
+      const fetchedUsers = await fetchUsers(3); // Start with just 3 users
+      setUsers(fetchedUsers);
+      console.log('Fetched users:', fetchedUsers);
+    } catch (error) {
+      console.error('Error loading users:', error);
+    }
   };
+
+  // Display first user only for now
+  const firstUser = users[0];
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Random User List</Text>
       
-      <View style={styles.userItem}>
-        <Avatar
-          rounded
-          source={{ uri: testUser.picture.thumbnail }}
-          size="medium"
-        />
-        <View style={styles.nameContainer}>
-          <Text style={styles.firstName}>{testUser.name.first}</Text>
-          <Text style={styles.lastName}>{testUser.name.last}</Text>
+      {firstUser ? (
+        <View style={styles.userItem}>
+          <Avatar
+            rounded
+            source={{ uri: firstUser.picture.thumbnail }}
+            size="medium"
+          />
+          <View style={styles.nameContainer}>
+            <Text style={styles.firstName}>{firstUser.name.first}</Text>
+            <Text style={styles.lastName}>{firstUser.name.last}</Text>
+          </View>
         </View>
-      </View>
+      ) : (
+        <Text style={styles.loading}>Loading...</Text>
+      )}
     </View>
   );
 }
@@ -60,6 +80,10 @@ const styles = StyleSheet.create({
   },
   lastName: {
     fontSize: 16,
+    color: colors.textSecondary,
+  },
+  loading: {
+    textAlign: 'center',
     color: colors.textSecondary,
   },
 });
