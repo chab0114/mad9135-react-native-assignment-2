@@ -1,6 +1,7 @@
 // src/screens/HomeScreen.tsx
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { Avatar } from '@rneui/themed';
 import { colors } from '../styles/globalStyles';
 
 export default function HomeScreen() {
@@ -15,8 +16,15 @@ export default function HomeScreen() {
       <Text style={styles.title}>Random User List</Text>
       
       <View style={styles.userItem}>
-        <Text style={styles.firstName}>{testUser.name.first}</Text>
-        <Text style={styles.lastName}>{testUser.name.last}</Text>
+        <Avatar
+          rounded
+          source={{ uri: testUser.picture.thumbnail }}
+          size="medium"
+        />
+        <View style={styles.nameContainer}>
+          <Text style={styles.firstName}>{testUser.name.first}</Text>
+          <Text style={styles.lastName}>{testUser.name.last}</Text>
+        </View>
       </View>
     </View>
   );
@@ -35,10 +43,15 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   userItem: {
+    flexDirection: 'row',
     padding: 15,
     marginHorizontal: 15,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
+    alignItems: 'center',
+  },
+  nameContainer: {
+    marginLeft: 15,
   },
   firstName: {
     fontSize: 18,
