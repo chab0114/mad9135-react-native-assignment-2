@@ -16,7 +16,7 @@ export default function HomeScreen() {
 
   const loadUsers = async () => {
     try {
-      const fetchedUsers = await fetchUsers(3); 
+      const fetchedUsers = await fetchUsers(10); 
       setUsers(fetchedUsers);
       console.log('Fetched users:', fetchedUsers);
     } catch (error) {
