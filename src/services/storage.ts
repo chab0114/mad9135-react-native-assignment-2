@@ -15,7 +15,7 @@ export const saveUsers = async (users: User[]): Promise<void> => {
 };
 
 // Load users from AsyncStorage
-export const loadUsers = async (): Promise<User[]> => {
+export const loadStoredUsers = async (): Promise<User[]> => {
   try {
     const jsonValue = await AsyncStorage.getItem(USERS_STORAGE_KEY);
     return jsonValue ? JSON.parse(jsonValue) : [];

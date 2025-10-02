@@ -1,30 +1,50 @@
 // src/screens/HomeScreen.tsx
 import React, { useState, useEffect } from 'react';
-import { View, Text,FlatList } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import { Avatar } from '@rneui/themed';
-import { fetchUsers } from '../services/userApi';
-import { User } from '../types/User';
 import { homeScreenStyles as styles } from '../styles/globalStyles';
+import { fetchUsers } from '../services/userApi';
+import { saveUsers, loadStoredUsers } from '../services/storage';
+import { User } from '../types/User';
 
 export default function HomeScreen() {
   const [users, setUsers] = useState<User[]>([]);
 
-  // Fetch users when component loads
+  // Load users when component mounts
   useEffect(() => {
-    loadUsers();
+    loadInitialUsers();
   }, []);
 
-  const loadUsers = async () => {
+  // Check storage first, then fetch from API if needed
+  const loadInitialUsers = async () => {
     try {
-      const fetchedUsers = await fetchUsers(10); 
-      setUsers(fetchedUsers);
-      console.log('Fetched users:', fetchedUsers);
+      const savedUsers = await loadStoredUsers();
+      
+      if (savedUsers.length > 0) {
+        console.log('Loading from storage:', savedUsers.length, 'users');
+        setUsers(savedUsers);
+      } else {
+        console.log('No saved users, fetching from API...');
+        await fetchAndSaveUsers();
+      }
     } catch (error) {
-      console.error('Error loading users:', error);
+      console.error('Error loading initial users:', error);
     }
   };
 
-  // Render function for each user item
+  // Fetch from API and save to storage
+  const fetchAndSaveUsers = async () => {
+    try {
+      const fetchedUsers = await fetchUsers(10);
+      setUsers(fetchedUsers);
+      await saveUsers(fetchedUsers);
+      console.log('Saved', fetchedUsers.length, 'users to storage');
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+
+  // Render function for each user item in FlatList
   const renderUserItem = ({ item }: { item: User }) => (
     <View style={styles.userItem}>
       <Avatar
@@ -51,4 +71,3 @@ export default function HomeScreen() {
     </View>
   );
 }
-
