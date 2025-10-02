@@ -6,6 +6,7 @@ import { homeScreenStyles as styles } from '../styles/globalStyles';
 import { fetchUsers } from '../services/userApi';
 import { saveUsers, loadStoredUsers } from '../services/storage';
 import { User } from '../types/User';
+import FAB from '../components/FAB';
 
 export default function HomeScreen() {
   const [users, setUsers] = useState<User[]>([]);
@@ -56,6 +57,20 @@ export default function HomeScreen() {
     console.log('Refresh complete');
   };
 
+  // Handle FAB press - add single user to top
+  const addSingleUser = async () => {
+    try {
+      console.log('Adding single user...');
+      const newUsers = await fetchUsers(1);
+      const updatedUsers = [newUsers[0], ...users]; 
+      setUsers(updatedUsers);
+      await saveUsers(updatedUsers);
+      console.log('✅ Added new user');
+    } catch (error) {
+      console.error('Error adding user:', error);
+    }
+  };
+
   // Render function for each user item in FlatList
   const renderUserItem = ({ item }: { item: User }) => (
     <View style={[
@@ -89,6 +104,7 @@ export default function HomeScreen() {
         }
         ListEmptyComponent={<Text style={{ color: '#fff', textAlign: 'center', marginTop: 20 }}>No users available.</Text>}
       />
+      <FAB onPress={addSingleUser} />
     </View>
   );
 }
