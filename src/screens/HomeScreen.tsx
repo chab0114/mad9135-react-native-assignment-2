@@ -1,12 +1,12 @@
 // src/screens/HomeScreen.tsx
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, Platform, RefreshControl } from 'react-native';
-import { Avatar } from '@rneui/themed';
 import { homeScreenStyles as styles } from '../styles/globalStyles';
 import { fetchUsers } from '../services/userApi';
 import { saveUsers, loadStoredUsers } from '../services/storage';
 import { User } from '../types/User';
 import FAB from '../components/FAB';
+import SwipeableUserItem from '../components/SwipeableUserItem';
 
 export default function HomeScreen() {
   const [users, setUsers] = useState<User[]>([]);
@@ -71,23 +71,28 @@ export default function HomeScreen() {
     }
   };
 
+  // Handle delete user
+const deleteUser = async (uuid: string) => {
+  try {
+    console.log('🗑️ Deleting user:', uuid);
+    const updatedUsers = users.filter(user => user.uuid !== uuid);
+    setUsers(updatedUsers);
+    await saveUsers(updatedUsers);
+    console.log('✅ User deleted');
+  } catch (error) {
+    console.error('Error deleting user:', error);
+  }
+};
+
   // Render function for each user item in FlatList
-  const renderUserItem = ({ item }: { item: User }) => (
-    <View style={[
-      styles.userItem,
-      isIOS ? styles.userItemIOS : styles.userItemAndroid]}>
-      <Avatar
-        rounded
-        source={{ uri: item.picture.thumbnail }}
-        size="medium"
-        containerStyle={isIOS ? styles.avatarIOS : styles.avatarAndroid}
-      />
-      <View style={styles.nameContainer}>
-        <Text style={styles.firstName}>{item.name.first}</Text>
-        <Text style={styles.lastName}>{item.name.last}</Text>
-      </View>
-    </View>
-  );
+  // Render function for each user item in FlatList
+const renderUserItem = ({ item }: { item: User }) => (
+  <SwipeableUserItem
+    user={item}
+    isIOS={isIOS}
+    onDelete={deleteUser}
+  />
+);
 
   return (
     <View style={styles.container}>

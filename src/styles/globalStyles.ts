@@ -60,4 +60,16 @@ export const homeScreenStyles = StyleSheet.create({
     fontSize: 16,
     color: colors.textSecondary,
   },
+  deleteButton: {
+  backgroundColor: colors.error,
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: 100,
+  marginRight: 15,
+},
+deleteText: {
+  color: colors.textPrimary,
+  fontWeight: 'bold',
+  fontSize: 16,
+},
 });
