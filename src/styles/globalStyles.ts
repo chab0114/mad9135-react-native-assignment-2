@@ -1,8 +1,6 @@
-// src/styles/globalStyles.ts
-
 import { StyleSheet } from 'react-native';
 
-// Dota 2 inspired color palette
+// Color palette
 export const colors = {
   background: '#1a1a1a',
   backgroundSecondary: '#242424',
@@ -18,19 +16,37 @@ export const colors = {
   warning: '#faad14',
 };
 
-// Global reusable styles
-export const globalStyles = StyleSheet.create({
+// HomeScreen styles
+export const homeScreenStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
+    paddingTop: 60,
   },
   title: {
     fontSize: 24,
     color: colors.primary,
-    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,
   },
-  text: {
+  userItem: {
+    flexDirection: 'row',
+    padding: 15,
+    marginHorizontal: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+    alignItems: 'center',
+  },
+  nameContainer: {
+    marginLeft: 15,
+  },
+  firstName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: colors.primary,
+  },
+  lastName: {
     fontSize: 16,
-    color: colors.textPrimary,
+    color: colors.textSecondary,
   },
 });

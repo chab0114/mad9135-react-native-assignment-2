@@ -1,10 +1,10 @@
 // src/screens/HomeScreen.tsx
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text,FlatList } from 'react-native';
 import { Avatar } from '@rneui/themed';
-import { colors } from '../styles/globalStyles';
 import { fetchUsers } from '../services/userApi';
 import { User } from '../types/User';
+import { homeScreenStyles as styles } from '../styles/globalStyles';
 
 export default function HomeScreen() {
   const [users, setUsers] = useState<User[]>([]);
@@ -52,36 +52,3 @@ export default function HomeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-    paddingTop: 60,
-  },
-  title: {
-    fontSize: 24,
-    color: colors.primary,
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  userItem: {
-    flexDirection: 'row',
-    padding: 15,
-    marginHorizontal: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-    alignItems: 'center',
-  },
-  nameContainer: {
-    marginLeft: 15,
-  },
-  firstName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: colors.primary,
-  },
-  lastName: {
-    fontSize: 16,
-    color: colors.textSecondary,
-  },
-});
