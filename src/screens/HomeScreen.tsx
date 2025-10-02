@@ -1,6 +1,6 @@
 // src/screens/HomeScreen.tsx
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Platform } from 'react-native';
+import { View, Text, FlatList, Platform, RefreshControl } from 'react-native';
 import { Avatar } from '@rneui/themed';
 import { homeScreenStyles as styles } from '../styles/globalStyles';
 import { fetchUsers } from '../services/userApi';
@@ -10,7 +10,7 @@ import { User } from '../types/User';
 export default function HomeScreen() {
   const [users, setUsers] = useState<User[]>([]);
   const isIOS = Platform.OS === 'ios';
-  console.log('Current platform:', Platform.OS, 'isIOS:', isIOS);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   // Load users when component mounts
   useEffect(() => {
@@ -46,6 +46,13 @@ export default function HomeScreen() {
     }
   };
 
+  // Handle pull-to-refresh
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchAndSaveUsers();
+    setRefreshing(false);
+  };
+
   // Render function for each user item in FlatList
   const renderUserItem = ({ item }: { item: User }) => (
     <View style={[
@@ -72,6 +79,12 @@ export default function HomeScreen() {
         data={users}
         renderItem={renderUserItem}
         keyExtractor={(item) => item.uuid}
+        refreshControl={
+          <RefreshControl 
+          refreshing={refreshing} 
+          onRefresh={onRefresh} />
+        }
+        ListEmptyComponent={<Text style={{ color: '#fff', textAlign: 'center', marginTop: 20 }}>No users available.</Text>}
       />
     </View>
   );
