@@ -64,14 +64,16 @@ export const homeScreenStyles = StyleSheet.create({
     color: colors.textSecondary,
   },
   deleteButton: {
-  backgroundColor: colors.error,
+  backgroundColor: colors.backgroundSecondary, // Dark background instead of red
   justifyContent: 'center',
-  alignItems: 'center',
+  alignItems: 'flex-end',
   width: 100,
-  marginRight: 15,
+  paddingRight: 20,
+  borderLeftWidth: 3,
+  borderLeftColor: colors.error, // Red accent line
 },
 deleteText: {
-  color: colors.textPrimary,
+  color: colors.error, // Red text instead of white
   fontWeight: 'bold',
   fontSize: 16,
 },
