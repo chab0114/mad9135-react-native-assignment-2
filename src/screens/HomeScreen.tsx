@@ -1,6 +1,6 @@
 // src/screens/HomeScreen.tsx
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, Platform } from 'react-native';
 import { Avatar } from '@rneui/themed';
 import { homeScreenStyles as styles } from '../styles/globalStyles';
 import { fetchUsers } from '../services/userApi';
@@ -9,6 +9,8 @@ import { User } from '../types/User';
 
 export default function HomeScreen() {
   const [users, setUsers] = useState<User[]>([]);
+  const isIOS = Platform.OS === 'ios';
+  console.log('Current platform:', Platform.OS, 'isIOS:', isIOS);
 
   // Load users when component mounts
   useEffect(() => {
@@ -46,11 +48,14 @@ export default function HomeScreen() {
 
   // Render function for each user item in FlatList
   const renderUserItem = ({ item }: { item: User }) => (
-    <View style={styles.userItem}>
+    <View style={[
+      styles.userItem,
+      isIOS ? styles.userItemIOS : styles.userItemAndroid]}>
       <Avatar
         rounded
         source={{ uri: item.picture.thumbnail }}
         size="medium"
+        containerStyle={isIOS ? styles.avatarIOS : styles.avatarAndroid}
       />
       <View style={styles.nameContainer}>
         <Text style={styles.firstName}>{item.name.first}</Text>

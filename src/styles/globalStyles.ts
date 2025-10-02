@@ -30,15 +30,26 @@ export const homeScreenStyles = StyleSheet.create({
     marginBottom: 20,
   },
   userItem: {
-    flexDirection: 'row',
     padding: 15,
     marginHorizontal: 15,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
     alignItems: 'center',
   },
-  nameContainer: {
+  userItemIOS: {
+    flexDirection: 'row-reverse',
+  },
+  userItemAndroid: {
+    flexDirection: 'row',
+  },
+  avatarIOS: {
     marginLeft: 15,
+  },
+  avatarAndroid: {
+    marginRight: 15,
+  },
+  nameContainer: {
+    flex: 1,
   },
   firstName: {
     fontSize: 18,
