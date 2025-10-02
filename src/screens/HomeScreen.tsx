@@ -1,6 +1,7 @@
 // src/screens/HomeScreen.tsx
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Platform, RefreshControl } from 'react-native';
+import { View, Text, FlatList, Platform, RefreshControl, StatusBar } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { homeScreenStyles as styles } from '../styles/globalStyles';
 import { fetchUsers } from '../services/userApi';
 import { saveUsers, loadStoredUsers } from '../services/storage';
@@ -10,6 +11,7 @@ import SwipeableUserItem from '../components/SwipeableUserItem';
 
 export default function HomeScreen() {
   const [users, setUsers] = useState<User[]>([]);
+  const [newUserId, setNewUserId] = useState<string | null>(null);
   const isIOS = Platform.OS === 'ios';
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
@@ -95,7 +97,8 @@ const renderUserItem = ({ item }: { item: User }) => (
 );
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="#1a1a1a" />
       <Text style={styles.title}>Random User List</Text>
       
       <FlatList
@@ -110,6 +113,6 @@ const renderUserItem = ({ item }: { item: User }) => (
         ListEmptyComponent={<Text style={{ color: '#fff', textAlign: 'center', marginTop: 20 }}>No users available.</Text>}
       />
       <FAB onPress={addSingleUser} />
-    </View>
+    </SafeAreaView>
   );
 }
