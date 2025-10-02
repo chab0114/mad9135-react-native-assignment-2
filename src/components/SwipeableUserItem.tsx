@@ -38,10 +38,12 @@ export default function SwipeableUserItem({ user, isIOS, onDelete }: SwipeableUs
         isIOS ? styles.userItemIOS : styles.userItemAndroid
       ]}>
         <Avatar
-          rounded
           source={{ uri: user.picture.thumbnail }}
           size="medium"
-          containerStyle={isIOS ? styles.avatarIOS : styles.avatarAndroid}
+          containerStyle={[
+            isIOS ? styles.avatarIOS : styles.avatarAndroid, styles.avatarSquare
+          ]}
+          avatarStyle={{ borderRadius: 8 }}
         />
         <View style={styles.nameContainer}>
           <Text style={styles.firstName}>{user.name.first}</Text>

@@ -48,6 +48,9 @@ export const homeScreenStyles = StyleSheet.create({
   avatarAndroid: {
     marginRight: 15,
   },
+  avatarSquare: {
+    borderRadius: 8,
+  },
   nameContainer: {
     flex: 1,
   },
