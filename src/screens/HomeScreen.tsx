@@ -37,6 +37,7 @@ export default function HomeScreen() {
   // Fetch from API and save to storage
   const fetchAndSaveUsers = async () => {
     try {
+      console.log('Fetching users from API...');
       const fetchedUsers = await fetchUsers(10);
       setUsers(fetchedUsers);
       await saveUsers(fetchedUsers);
@@ -48,9 +49,11 @@ export default function HomeScreen() {
 
   // Handle pull-to-refresh
   const onRefresh = async () => {
+    console.log('Refreshing user list...');
     setRefreshing(true);
     await fetchAndSaveUsers();
     setRefreshing(false);
+    console.log('Refresh complete');
   };
 
   // Render function for each user item in FlatList
